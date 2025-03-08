@@ -1,14 +1,11 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
-import { Button } from 'react-bootstrap';
-import {Link} from "react-router-dom"
+import ShowListOfBooks from './components/ShowListOfBooks';
 
 function App() {
   return (
     <div className="App">
-      <Link to='addbook'>
-          <Button>Add new Book</Button>
-      </Link>
+      <ShowListOfBooks/>
     </div>
   );
 }

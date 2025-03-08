@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Form, Button, Row, Col, Modal } from "react-bootstrap";
+import { Form, Button, Row, Col, Modal, Spinner } from "react-bootstrap";
 import axios from "axios";
 
 const Formcomp = () => {
@@ -13,6 +13,7 @@ const Formcomp = () => {
   });
 
   const [validated, setValidated] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -32,12 +33,12 @@ const Formcomp = () => {
     }
 
     setValidated(true);
+    setLoading(true); 
 
     try {
       const response = await axios.post("https://tcsinternreact.onrender.com/addbook", formData);
       console.log("Form Submitted Successfully:", response.data);
       setShowSuccessModal(true);
-
       setFormData({
         BookName: "",
         Author: "",
@@ -46,19 +47,20 @@ const Formcomp = () => {
         Description: "",
         Price: "",
       });
-
       setValidated(false);
     } catch (error) {
-        console.error("Error submitting form:", error);
-        let errorMsg = "Failed to submit book details. Please try again.";
-      
-        if (error.response && error.response.data && error.response.data.error) {
-          errorMsg = error.response.data.error;
-        }
-      
-        setErrorMessage(errorMsg);
-        setShowErrorModal(true);
-      }      
+      console.error("Error submitting form:", error);
+      let errorMsg = "Failed to submit book details. Please try again.";
+
+      if (error.response && error.response.data && error.response.data.error) {
+        errorMsg = error.response.data.error;
+      }
+
+      setErrorMessage(errorMsg);
+      setShowErrorModal(true);
+    } finally {
+      setLoading(false); // Hide loader after request completes
+    }
   };
 
   return (
@@ -137,11 +139,13 @@ const Formcomp = () => {
             <Form.Control.Feedback type="invalid">Enter a valid price.</Form.Control.Feedback>
           </Col>
         </Row>
-        <Button type="submit" className="btn-dark w-full">
-          Submit
+
+        <Button type="submit" className="btn-dark w-full" disabled={loading}>
+          {loading ? <Spinner animation="border" size="sm" /> : "Submit"}
         </Button>
       </Form>
 
+      {/* Success Modal */}
       <Modal show={showSuccessModal} onHide={() => setShowSuccessModal(false)}>
         <Modal.Header closeButton>
           <Modal.Title>Success</Modal.Title>
@@ -152,6 +156,7 @@ const Formcomp = () => {
         </Modal.Footer>
       </Modal>
 
+      {/* Error Modal */}
       <Modal show={showErrorModal} onHide={() => setShowErrorModal(false)}>
         <Modal.Header closeButton>
           <Modal.Title>Error</Modal.Title>
