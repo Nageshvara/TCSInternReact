@@ -59,7 +59,7 @@ const Formcomp = () => {
       setErrorMessage(errorMsg);
       setShowErrorModal(true);
     } finally {
-      setLoading(false); // Hide loader after request completes
+      setLoading(false);
     }
   };
 
@@ -145,7 +145,6 @@ const Formcomp = () => {
         </Button>
       </Form>
 
-      {/* Success Modal */}
       <Modal show={showSuccessModal} onHide={() => setShowSuccessModal(false)}>
         <Modal.Header closeButton>
           <Modal.Title>Success</Modal.Title>
@@ -156,7 +155,6 @@ const Formcomp = () => {
         </Modal.Footer>
       </Modal>
 
-      {/* Error Modal */}
       <Modal show={showErrorModal} onHide={() => setShowErrorModal(false)}>
         <Modal.Header closeButton>
           <Modal.Title>Error</Modal.Title>

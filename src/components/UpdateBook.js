@@ -41,7 +41,7 @@ function UpdateBook() {
 
   const handleCloseSuccess = () => {
     setShowSuccessModal(false);
-    navigate("/"); // Redirect to home page
+    navigate("/");
   };
 
   const handleCloseError = () => setShowErrorModal(false);
@@ -111,7 +111,6 @@ function UpdateBook() {
         </Button>
       </Form>
 
-      {/* Success Modal */}
       <Modal show={showSuccessModal} onHide={handleCloseSuccess} centered>
         <Modal.Header closeButton>
           <Modal.Title>Success</Modal.Title>
@@ -124,7 +123,6 @@ function UpdateBook() {
         </Modal.Footer>
       </Modal>
 
-      {/* Error Modal */}
       <Modal show={showErrorModal} onHide={handleCloseError} centered>
         <Modal.Header closeButton>
           <Modal.Title>Error</Modal.Title>
