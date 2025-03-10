@@ -18,10 +18,6 @@ const router = createBrowserRouter([
     element:<AddFormcomp/>
   },
   {
-    path:'/bookslist',
-    element:<BooksList/>
-  },
-  {
     path:'/update/:_id',
     element:<UpdateBook/>
   }
