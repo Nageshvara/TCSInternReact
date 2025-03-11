@@ -3,9 +3,10 @@ import { Form, Button, Row, Col, Modal, Spinner } from "react-bootstrap";
 import axios from "axios";
 
 const Formcomp = () => {
+  const loggedInUser = localStorage.getItem("uname");
   const [formData, setFormData] = useState({
     BookName: "",
-    Author: "",
+    Author: loggedInUser,
     AuthorEmail: "",
     Publisher: "",
     Description: "",
@@ -87,7 +88,7 @@ const Formcomp = () => {
               minLength={5}
               required
               value={formData.Author}
-              onChange={handleChange}
+              readOnly
             />
             <Form.Control.Feedback type="invalid">Author Name must be at least 5 characters.</Form.Control.Feedback>
           </Col>

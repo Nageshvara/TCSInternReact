@@ -6,6 +6,10 @@ import reportWebVitals from './reportWebVitals';
 import { createBrowserRouter,RouterProvider } from 'react-router-dom';
 import AddFormcomp from './components/AddFormcomp';
 import UpdateBook from './components/UpdateBook';
+import Register from './components/Register';
+import Login from './components/Login';
+import ShowListOfBooks from './components/ShowListOfBooks';
+import MyBooksList from './components/MyBooksList';
 
 const router = createBrowserRouter([
   {
@@ -13,7 +17,27 @@ const router = createBrowserRouter([
     element:<App/>
   },
   {
+    path:'/register',
+    element:<Register/>
+  },
+  {
+    path:'/login',
+    element:<Login/>
+  },
+  {
+    path:'/mybookslist',
+    element:<MyBooksList/>
+  },
+  {
+    path:'/bookslist',
+    element:<ShowListOfBooks/>
+  },
+  {
     path:'/addbook',
+    element:<AddFormcomp/>
+  },
+  {
+    path:'bookslist/addbook',
     element:<AddFormcomp/>
   },
   {

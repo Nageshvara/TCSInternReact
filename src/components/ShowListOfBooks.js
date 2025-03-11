@@ -10,6 +10,7 @@ function ShowListOfBooks() {
   const [loading,setLoading] = useState(false);
   const [searchTnput,setSearchInput] = useState("");
   const navigate = useNavigate();
+  const loggedInUser = localStorage.getItem("uname");
   
   useEffect(()=>{
     fetchBooks();
@@ -90,6 +91,7 @@ function ShowListOfBooks() {
                           variant="warning"
                           size="sm"
                           onClick={() => navigate(`/update/${book._id}`)}
+                          disabled={book.author !== loggedInUser}
                         >
                           Update
                         </Button>

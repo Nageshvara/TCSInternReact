@@ -41,14 +41,21 @@ function UpdateBook() {
 
   const handleCloseSuccess = () => {
     setShowSuccessModal(false);
-    navigate("/");
+    navigate("/mybookslist");
   };
 
   const handleCloseError = () => setShowErrorModal(false);
 
   if (loading) {
-    return <Spinner animation="border" variant="primary" />;
-  }
+    return (
+      <div
+        className="d-flex justify-content-center align-items-center"
+        style={{ minHeight: "100vh" }}
+      >
+        <Spinner animation="border" variant="dark" />
+      </div>
+    );
+  }  
 
   return (
     <Container>
