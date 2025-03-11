@@ -22,7 +22,7 @@ function Login() {
     setMessage(null);
     setError(null);
     try {
-      const res = await axios.post("http://localhost:5000/login", formData);
+      const res = await axios.post("https://tcsinternreact.onrender.com/login", formData);
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("uname",formData.username)
       setMessage("Login successful!");

@@ -22,7 +22,7 @@ function Register() {
     setMessage(null);
     setError(null);
     try {
-      const res = await axios.post("http://localhost:5000/register", formData);
+      const res = await axios.post("https://tcsinternreact.onrender.com/register", formData);
       setMessage(res.data.message);
     } catch (err) {
       setError(err.response?.data?.error || "Registration failed");
