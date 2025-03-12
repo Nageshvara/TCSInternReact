@@ -86,7 +86,7 @@ app.get("/mybooks",authMiddleware,async (req,res)=>{
     }
 })
 
-app.post("/addbook", async (req, res) => {
+app.post("/addbook",authMiddleware ,async (req, res) => {
     const { Author: authorName, AuthorEmail, BookName, Publisher, Description, Price } = req.body;
   
     if (!authorName || !AuthorEmail || !BookName || !Publisher || !Description || !Price) {
@@ -186,7 +186,7 @@ app.post("/addbook", async (req, res) => {
     }
   })
 
-  app.put("/updatebook/:id", async (req, res) => {
+  app.put("/updatebook/:id",authMiddleware ,async (req, res) => {
     try {
       const bookId = req.params.id;
       const { bookName, email, publisher, description, price } = req.body;

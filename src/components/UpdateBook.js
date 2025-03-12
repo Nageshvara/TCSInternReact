@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Form, Button, Spinner, Container, Modal } from "react-bootstrap";
 import { useParams, useNavigate } from "react-router-dom";
+import Autherrorimg from "../imgs/auth_error.svg"
 
 function UpdateBook() {
   const { _id } = useParams();
@@ -11,8 +12,13 @@ function UpdateBook() {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [showAuthModal, setShowAuthModal] = useState(false);
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setShowAuthModal(true);
+    }
     axios
       .get(`https://tcsinternreact.onrender.com/getbook/${_id}`)
       .then((response) => {
@@ -24,6 +30,11 @@ function UpdateBook() {
         setLoading(false);
       });
   }, [_id]);
+
+  const handleAuthClose = () => {
+    setShowAuthModal(false);
+    navigate("/login");
+  };
 
   const handleUpdate = (e) => {
     e.preventDefault();
@@ -141,6 +152,24 @@ function UpdateBook() {
           </Button>
         </Modal.Footer>
       </Modal>
+      <Modal show={showAuthModal} onHide={handleAuthClose} centered>
+                  <Modal.Header closeButton>
+                    <Modal.Title>Authentication Required</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body className="text-center">
+                    <img
+                      src={Autherrorimg}
+                      alt="Login Required"
+                      style={{ width: "100%", maxWidth: "300px", marginBottom: "10px" ,height:"100px"}}
+                    />
+                    <p>You must be logged in to access this page.</p>
+                  </Modal.Body>
+                  <Modal.Footer>
+                    <Button variant="primary" onClick={handleAuthClose}>
+                      Go to Login
+                    </Button>
+                  </Modal.Footer>
+        </Modal>
     </Container>
   );
 }

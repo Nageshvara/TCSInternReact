@@ -1,9 +1,13 @@
-import React, { useState } from "react";
-import { Form, Button, Row, Col, Modal, Spinner } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import { Form, Row, Col, Modal, Spinner,Button } from "react-bootstrap";
 import axios from "axios";
+import Autherrorimg from "../imgs/auth_error.svg"
+import { useNavigate } from "react-router-dom";
 
 const Formcomp = () => {
   const loggedInUser = localStorage.getItem("uname");
+  const navigate =useNavigate();
+
   const [formData, setFormData] = useState({
     BookName: "",
     Author: loggedInUser,
@@ -18,6 +22,19 @@ const Formcomp = () => {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [showAuthModal, setShowAuthModal] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setShowAuthModal(true);
+    }
+  }, []);
+
+  const handleAuthClose = () => {
+    setShowAuthModal(false);
+    navigate("/login");
+  };
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -37,7 +54,9 @@ const Formcomp = () => {
     setLoading(true); 
 
     try {
-      const response = await axios.post("https://tcsinternreact.onrender.com/addbook", formData);
+      const response = await axios.post("https://tcsinternreact.onrender.com/addbook", formData,{
+        headers: { Authorization: localStorage.getItem("token") },
+      });
       console.log("Form Submitted Successfully:", response.data);
       setShowSuccessModal(true);
       setFormData({
@@ -163,6 +182,25 @@ const Formcomp = () => {
         <Modal.Body>{errorMessage}</Modal.Body>
         <Modal.Footer>
           <Button variant="danger" onClick={() => setShowErrorModal(false)}>OK</Button>
+        </Modal.Footer>
+      </Modal>
+      
+      <Modal show={showAuthModal} onHide={handleAuthClose} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Authentication Required</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="text-center">
+          <img
+            src={Autherrorimg}
+            alt="Login Required"
+            style={{ width: "100%", maxWidth: "300px", marginBottom: "10px" ,height:"100px"}}
+          />
+          <p>You must be logged in to access this page.</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="primary" onClick={handleAuthClose}>
+            Go to Login
+          </Button>
         </Modal.Footer>
       </Modal>
     </>
