@@ -133,26 +133,33 @@ app.post("/addbook", authMiddleware, async (req, res) => {
     }
 });
 
-app.get("/getbooks", async (req, res) => {
+app.get('/getbooks', async (req, res) => {
     try {
-        const authors = await Author.find();
-        const books = authors.flatMap((author) =>
-            author.books.map((book) => ({
-                _id: book._id,
-                bookName: book.title,
-                author: author.authorDetails.AuthorName,
-                email: author.authorDetails.AuthorEmail,
-                publisher: book.publisher,
-                description: book.description,
-                price: book.price,
-            }))
-        );
-        res.status(200).json(books);
+      const page = parseInt(req.query.page) || 1;
+      const limit = 8;
+      const skip = (page - 1) * limit;
+  
+      const authors = await Author.find();
+      const books = authors.flatMap((author) =>
+        author.books.map((book) => ({
+          _id: book._id,
+          bookName: book.title,
+          author: author.authorDetails.AuthorName,
+          email: author.authorDetails.AuthorEmail,
+          publisher: book.publisher,
+          description: book.description,
+          price: book.price,
+        }))
+      );
+  
+      const paginatedBooks = books.slice(skip, skip + limit);
+      res.status(200).json({ books: paginatedBooks, total: books.length });
     } catch (error) {
-        res.status(500).json({ error: errorMessages.fetchBookFailed });
+      res.status(500).json({ error: errorMessages.fetchBookFailed });
     }
-});
+  });
 
+  
 app.get('/getbook/:_id', async (req, res) => {
     try {
         const bookId = req.params._id;
